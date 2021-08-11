@@ -31,6 +31,7 @@ body {
   margin: 10px;
   color: #00c098;
   padding: 20px;
+
   border-radius: 20px;
   display: flex;
   flex-flow: column wrap;
