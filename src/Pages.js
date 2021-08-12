@@ -1,7 +1,7 @@
 import React from "react";
 import Page from "./Page";
 import { useState, useEffect } from "react";
-import Loading from "./Loading";
+/*
 async function getData(currentPage) {
   const response = await fetch(
     `https://reqres.in/api/users?page=${currentPage}`
@@ -9,65 +9,58 @@ async function getData(currentPage) {
   const obj = await response.json();
   return obj;
 }
-var x = 0;
+var currentPage = 1;
+var DATA = {};
+var isFetchingApiDone = true;
+*/
+var currentPageNo = 1;
 export default function Pages() {
-  x++;
-  const [values, setValues] = useState(() => {
-    return { isPageLoaded: false, currentPage: 1, data: {} };
+  const [pageNo, setPageNo] = useState(() => {
+    return [];
   });
-  function requestForApi() {
-    setValues((prev) => {
-      return { ...prev, isPageLoaded: false };
-    });
-    getData(values.currentPage)
-      .then((res) => {
-        //console.log(res);
-        setValues((prev) => {
-          return { ...prev, isPageLoaded: true, data: res };
-        });
-      })
-      .catch((error) => {});
+  const [allInfo, setAllInfo] = useState(() => {
+    return {};
+  });
+  function changePageClick(step) {
+    if (pageNo + step <= 0) return;
+    currentPageNo += step;
+    setPageNo(currentPageNo);
   }
 
-  function changePage(value) {
-    //console.log("inside change page");
-    if (values.currentPage + value <= 0) {
-    } else {
-      setValues((prev) => {
-        return { ...prev, currentPage: values.currentPage + value };
-      });
-      requestForApi();
-    }
-  }
-  //console.log("x=" + x);
-  //console.log(values.data);
-  //console.log(`isPageLoaded${values.isPageLoaded}`);
-  const DATA = { ...values.data };
-  //console.log(DATA);
+  useEffect(() => {
+    //console.log("inside useEffect");
+    fetch(`https://reqres.in/api/users?page=${pageNo}`)
+      .then((res) => res.json())
+      .then((res) => {
+        setAllInfo({ ...res });
+        //console.log(allInfo);
+      })
+      .catch((error) => {});
+  }, [pageNo]);
+  //console.log(allInfo);
   return (
     <div className="container">
-      <Page
-        isPageLoaded={values.isPageLoaded}
-        DATA={DATA}
-        currentPage={values.currentPage - 1}
-      />
-      <Loading
-        isPageLoaded={values.isPageLoaded}
-        currentPage={values.currentPage - 1}
-      />
+      <Page allInfo={allInfo} />
       <div className="current-status-bar">
         <div className="button">
-          <button id="button" onClick={() => changePage(-1)}>
+          <button id="button" onClick={() => changePageClick(-1)}>
             Back
           </button>
         </div>
         <div>
-          <h3>Page no {values.currentPage - 1}</h3>
+          <h3>Page no {allInfo.page}</h3>
         </div>
-        <div className="button" id="button">
-          <button onClick={() => changePage(1)}>Next</button>
+        <div className="button">
+          <button id="button" onClick={() => changePageClick(1)}>
+            Next
+          </button>
         </div>
       </div>
     </div>
   );
 }
+/*
+ 
+       <Page isFetchingApiDone={isFetchingApiDone} DATA={DATA} />
+      />
+*/

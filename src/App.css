@@ -31,7 +31,7 @@ body {
   margin: 10px;
   color: #00c098;
   padding: 20px;
-
+  width: 100vh;
   border-radius: 20px;
   display: flex;
   flex-flow: column wrap;
@@ -48,4 +48,28 @@ body {
 }
 .each-person {
   margin: 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+.image {
+  border-radius: 50px;
+}
+.information-of-eachperson {
+  padding-top: 40px;
+}
+.footer {
+  background-color: #011313;
+  color: #00c098;
+  display: flex;
+  flex-flow: row wrap;
+  width: 100vh;
+  justify-content: space-around;
+  margin: 10px;
+  border-radius: 20px;
+}
+.icons {
+  width: 50px;
+  margin-left: 25px;
+  margin-bottom: 20px;
 }
